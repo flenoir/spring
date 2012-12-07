@@ -1,0 +1,18 @@
+extends layout
+
+block head
+	script(type="text/javascript",src="javascripts/elementEditor.js")
+
+block content
+	div#itemEditor(ng-controller="elementEditorCtrl")
+		label Number
+			input(ng-model="data.number",size="4")
+		label Name
+			input(ng-model="data.name")
+		label Type
+			select(ng-model="data.type",ng-options="value as label for (value, label) in types")
+		label(ng-show="data.type=='media'") File
+			select(ng-model="data.src",ng-options="file.file as file.file for file in mediaFiles")
+		label(ng-show="data.type=='template'") File
+			select(ng-model="data.src",ng-options="file.file as file.file for file in templateFiles")
+		button(ng-click="done()") Done

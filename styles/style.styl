@@ -1,0 +1,90 @@
+@import "nib/index"
+
+darkbgcolor = #303030
+darkbgcolorSelected = #101010
+
+bgcolor = #535353
+bgcolorSelected = #424242
+
+lightbgcolor = #757575
+lightbgcolorSelected = #646464
+
+body
+	margin 0
+	padding 0
+	font: 8pt "DroidSans", sans-serif
+	background-color bgcolor
+	color #FFF
+	text-shadow 0px -1px 0px #333333
+	overflow hidden
+
+a
+	color: #00B7FF
+
+div
+	cursor default
+
+input[type=text]
+	background lightbgcolor
+	border-radius 2px
+	box-shadow 0px 1px 0px 0px #737373
+	border 1px solid #303030
+	color #FFF
+	text-shadow 0px -1px 0px #333333
+	padding 1px 4px
+
+button, input[type=button]
+	background linear-gradient(top, #6B6B6B, #545454)
+	border-radius 2px
+	box-shadow 0px 1px 0px 0px #737373
+	border 1px solid #303030
+	color #FFF
+	text-shadow 0px -1px 0px #333333
+
+	&:active
+		background linear-gradient(bottom, #6B6B6B, #545454)
+
+div.toolbar
+	position absolute
+	top 0
+	left 0
+	right 0
+	height 27px
+	padding 5px
+	background linear-gradient(top, #6B6B6B, #545454)
+	border-bottom 1px solid #303030
+	box-shadow 0px 1px 0px 0px rgba(0, 0, 0, 0.5)
+
+div#library
+	div.elements
+		position absolute
+		top 38px
+		right 0
+		bottom 0
+		left 0
+		overflow-y auto
+		background darkbgcolor
+
+	div.element
+		clear both
+		overflow hidden
+		border-bottom 1px solid #303030
+		box-shadow inset 0px 1px 0px 0px #6A6A6A
+		padding 4px
+		background bgcolor
+
+		&.selected
+			background bgcolorSelected
+		div.number
+			float left
+			width 45px
+			padding 5px
+			font-weight bold
+			font-size 20px
+			text-align center
+			border 1px solid #303030
+			box-shadow inset -1px -1px 0px 0px #6A6A6A
+
+		div.file
+			float left
+			padding 0 10px

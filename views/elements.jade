@@ -1,0 +1,17 @@
+extends layout
+
+block head
+	title Library
+	script(type="text/javascript",src="javascripts/elements.js")
+
+block content
+	div#library(ng-controller="elementsCtrl")
+		div.toolbar
+			label Channel
+				input(type="text",ng-model="channel",size="4")
+
+			button(ng-click="newElement()") New Element
+		div.elements
+			div.element(ng-repeat="(id, element) in elements | orderBy:'element.number'",ng-click="selectElement(id)",ng-right-click="elementContextMenu($event, id)",ng-class="{selected: id == selectedId}")
+				div.number {{element.number}}
+				div.file {{element.src}} {{id}}
