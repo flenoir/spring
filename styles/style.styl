@@ -24,7 +24,7 @@ a
 div
 	cursor default
 
-input[type=text]
+input[type=text], select
 	background lightbgcolor
 	border-radius 2px
 	box-shadow 0px 1px 0px 0px #737373
@@ -32,6 +32,9 @@ input[type=text]
 	color #FFF
 	text-shadow 0px -1px 0px #333333
 	padding 1px 4px
+
+select
+	padding-right 1px
 
 button, input[type=button]
 	background linear-gradient(top, #6B6B6B, #545454)
@@ -54,6 +57,9 @@ div.toolbar
 	background linear-gradient(top, #6B6B6B, #545454)
 	border-bottom 1px solid #303030
 	box-shadow 0px 1px 0px 0px rgba(0, 0, 0, 0.5)
+
+	.right
+		float right
 
 div#library
 	div.elements
@@ -88,3 +94,57 @@ div#library
 		div.file
 			float left
 			padding 0 10px
+
+div#itemEditor
+	padding 10px
+
+	div.editor
+		position absolute
+		top 0
+		left 0
+		right 0
+		bottom 36px
+		overflow-y auto
+
+		label
+			display block
+			font-weight bold
+			clear left
+			margin 3px
+			overflow hidden
+
+			span
+				float left
+				width 50px
+				padding 6px
+
+			input, select, button
+				float left
+
+		div.templateData
+			label span
+				background darkbgcolor
+				border-radius 2px
+				box-shadow 0px 1px 0px 0px #737373
+				border 1px solid #303030
+				color #FFF
+				text-shadow 0px -1px 0px #333333
+				padding 1px 4px
+				margin 2px
+				width 75px
+				height 16px
+			input.key
+				width 75px
+
+			button
+				width 22px
+				height 20px
+
+	div.toolbar
+		top auto
+		bottom 0
+		button, label
+			float right
+
+		.left
+			float left

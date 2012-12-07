@@ -5,14 +5,39 @@ block head
 
 block content
 	div#itemEditor(ng-controller="elementEditorCtrl")
-		label Number
-			input(ng-model="data.number",size="4")
-		label Name
-			input(ng-model="data.name")
-		label Type
-			select(ng-model="data.type",ng-options="value as label for (value, label) in types")
-		label(ng-show="data.type=='media'") File
-			select(ng-model="data.src",ng-options="file.file as file.file for file in mediaFiles")
-		label(ng-show="data.type=='template'") File
-			select(ng-model="data.src",ng-options="file.file as file.file for file in templateFiles")
-		button(ng-click="done()") Done
+		div.editor
+			label 
+				span Number
+				input(type="text",ng-model="data.number",size="4")
+			label
+				span Name
+				input(type="text",ng-model="data.name")
+			label
+				span Type
+				select(ng-model="data.type",ng-options="value as label for (value, label) in types")
+			label(ng-show="data.type=='media'")
+				span File
+				select(ng-model="data.src",ng-options="file.file as file.file for file in mediaFiles")
+			label(ng-show="data.type=='template'")
+				span File
+				select(ng-model="data.src",ng-options="file.file as file.file for file in templateFiles")
+
+			div.templateData(ng-show="data.type=='template'")
+				div(ng-repeat="(key, value) in data.data | orderBy:key")
+					label(for="{{key}}")
+						span {{key}}
+						input(type="text",id="{{key}}",ng-model="data.data[key]")
+						button(ng-click="removeData(key)") -
+				div
+					label
+						input.key(type="text",ng-model="newKey")
+						input(type="text",ng-model="newValue")
+						button(ng-click="addData()") +
+
+
+		div.toolbar
+			button.left(ng-click="cancel()") Cancel
+			button(ng-click="done()") Done
+			button(ng-click="preview()") Preview
+			label Channel
+				input(type="text",ng-model="previewChannel",size="4")
