@@ -3,7 +3,12 @@ var _ = require("underscore");
 
 var elementsCtrl = function ($scope) {
 	$scope.elements = {};
-	$scope.channel = "1-1";
+	$scope.channel = "2-1";
+	$scope.previewChannel = "1-1";
+
+	$scope.$watch("previewChannel", function () {
+		global.previewChannel = $scope.previewChannel;
+	});
 
 	var elementContextMenu = new gui.Menu();
 	elementContextMenu.append(new gui.MenuItem({label: "Edit Element", click: function () {
@@ -25,6 +30,7 @@ var elementsCtrl = function ($scope) {
 
 	$scope.editElement = function (id) {
 		global.editElement = $scope.elements[id];
+		global.editElementId = id;
 		$scope.newElement();
 	}
 
@@ -38,17 +44,19 @@ var elementsCtrl = function ($scope) {
 
 	var menu = new gui.Menu({type: "menubar"});
 	var fileMenu  = new gui.Menu();
-	var scriptMenu  = new gui.Menu();
+	var editMenu  = new gui.Menu();
 	menu.append(new gui.MenuItem({label: "File", submenu: fileMenu}));
-	menu.append(new gui.MenuItem({label: "Script", submenu: scriptMenu}));
+	menu.append(new gui.MenuItem({label: "Edit", submenu: editMenu}));
 	fileMenu.append(new gui.MenuItem({label: "New"}));
 	fileMenu.append(new gui.MenuItem({label: "Open"}));
 	fileMenu.append(new gui.MenuItem({label: "Save", enabled: false}));
 	fileMenu.append(new gui.MenuItem({label: "Save As", checked: true}));
-	scriptMenu.append(new gui.MenuItem({label: "New Script", click: function () {
-		alert("new");
-	}}));
-	scriptMenu.append(new gui.MenuItem({label: "Open Script"}));
+	editMenu.append(new gui.MenuItem({
+		label: "New Element",
+		click: $scope.newElement
+	}));
+	editMenu.append(new gui.MenuItem({type: "separator"}));
+	editMenu.append(new gui.MenuItem({label: "Settings"}));
 
 	gui.Window.get().menu = menu;
 };
