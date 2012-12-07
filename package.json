@@ -1,0 +1,21 @@
+{
+	"name": "CG-Playout",
+	"private": true,
+	"version": "0.0.1",
+	"dependencies": {
+		"caspar-cg": "*",
+		"async": "*",
+		"jade": "*",
+		"stylus": "*",
+		"node-native-zip": "*",
+		"underscore": "*"
+	},
+	"main": "build/elements.html",
+	"window": {
+		"toolbar": false,
+		"width": 450,
+		"height": 600,
+		"min_width": 450,
+		"min_height": 340
+	}
+}
