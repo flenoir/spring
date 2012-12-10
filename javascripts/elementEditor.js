@@ -4,19 +4,9 @@ var ccg = global.ccg;
 
 var elementEditorCtrl = function ($scope) {
 	$scope.data = global.editElement;
-	$scope.id = global.editElementId;
+	$scope.originalNumber = $scope.data.number;
 	global.editElement = false;
-	global.editElementId = false;
 	$scope.previewChannel = global.previewChannel;
-
-	if (!$scope.data) {
-		$scope.data = {
-			number: 100,
-			data: {f0: "f0 value", f1: "f1 value"}
-		};
-
-		$scope.id = global.createId();
-	}
 
 	$scope.types = {
 		"media": "Media",
@@ -36,6 +26,18 @@ var elementEditorCtrl = function ($scope) {
 	$scope.$watch("data.src", function (newVal, oldVal) {
 		if (!$scope.data.name || $scope.data.name == "" || $scope.data.name == oldVal) {
 			$scope.data.name = $scope.data.src;
+		}
+
+		if ($scope.data.type == "template") {
+			ccg.getTemplateInfo($scope.data.src, function (err, data) {
+				if (err) {
+					alert("Error reading template data");
+					return;
+				}
+
+				$scope.fields = data.fields;
+				$scope.$apply();
+			});
 		}
 	});
 
@@ -63,11 +65,17 @@ var elementEditorCtrl = function ($scope) {
 	};
 
 	$scope.done = function () {
-		global.editElementCallback($scope.id, $scope.data);
+		global.editElementCallback($scope.originalNumber, $scope.data);
+		if ($scope.clearOnClose) {
+			ccg.clear($scope.previewChannel);
+		}
 		window.close();
 	}
 
 	$scope.cancel = function () {
+		if ($scope.clearOnClose) {
+			ccg.clear($scope.previewChannel);
+		}
 		window.close();
 	};
 
@@ -76,11 +84,13 @@ var elementEditorCtrl = function ($scope) {
 
 		if (data.type == "media") {
 			ccg.play($scope.previewChannel, data.src, {loop: true});
+			$scope.clearOnClose = true;
 			return;
 		}
 
 		if (data.type == "template") {
 			ccg.loadTemplate($scope.previewChannel, data.src, true, $scope.data.data);
+			$scope.clearOnClose = true;
 			return;
 		}
 	}

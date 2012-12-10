@@ -5,6 +5,8 @@ block head
 	script(type="text/javascript",src="javascripts/elements.js")
 
 block content
+	input#open(type="file",style="display: none;")
+	input#saveAs(type="file",style="display: none;",nwsaveas)
 	div#library(ng-controller="elementsCtrl")
 		div.toolbar
 			button.right(ng-click="newElement()") New Element
@@ -14,6 +16,6 @@ block content
 			label Preview Channel
 				input(type="text",ng-model="previewChannel",size="4")
 		div.elements
-			div.element(ng-repeat="(id, element) in elements | orderBy:'element.number'",ng-click="selectElement(id)",ng-right-click="elementContextMenu($event, id)",ng-class="{selected: id == selectedId}")
+			div.element(ng-repeat="(index, element) in elements | orderBy:'number'",ng-click="selectElement(element.number)",ng-right-click="elementContextMenu($event, element.number)",ng-dblclick="editElement(element)",ng-class="{selected: element.number == selectedElement}")
 				div.number {{element.number}}
-				div.file {{element.src}} {{id}}
+				div.file {{element.name}}

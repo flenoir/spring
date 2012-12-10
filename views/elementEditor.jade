@@ -8,7 +8,7 @@ block content
 		div.editor
 			label 
 				span Number
-				input(type="text",ng-model="data.number",size="4")
+				input(type="number",ng-model="data.number",size="4")
 			label
 				span Name
 				input(type="text",ng-model="data.name")
@@ -22,18 +22,11 @@ block content
 				span File
 				select(ng-model="data.src",ng-options="file.file as file.file for file in templateFiles")
 
-			div.templateData(ng-show="data.type=='template'")
-				div(ng-repeat="(key, value) in data.data | orderBy:key")
-					label(for="{{key}}")
-						span {{key}}
-						input(type="text",id="{{key}}",ng-model="data.data[key]")
-						button(ng-click="removeData(key)") -
-				div
-					label
-						input.key(type="text",ng-model="newKey")
-						input(type="text",ng-model="newValue")
-						button(ng-click="addData()") +
-
+			div(ng-show="data.type=='template'")
+				div(ng-repeat="field in fields | orderBy:'field'")
+					label 
+						span {{field}}
+						input(type="text",ng-model="data.data[field]")
 
 		div.toolbar
 			button.left(ng-click="cancel()") Cancel

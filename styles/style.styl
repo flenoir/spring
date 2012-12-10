@@ -9,7 +9,17 @@ bgcolorSelected = #424242
 lightbgcolor = #757575
 lightbgcolorSelected = #646464
 
+no-select()
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+
 body
+	no-select()
 	margin 0
 	padding 0
 	font: 8pt "DroidSans", sans-serif
@@ -24,7 +34,7 @@ a
 div
 	cursor default
 
-input[type=text], select
+input[type=text], input[type=number], select
 	background lightbgcolor
 	border-radius 2px
 	box-shadow 0px 1px 0px 0px #737373
@@ -55,6 +65,7 @@ div.toolbar
 	height 27px
 	padding 5px
 	background linear-gradient(top, #6B6B6B, #545454)
+	border-top 1px solid rgba(0, 0, 0, 0.5)
 	border-bottom 1px solid #303030
 	box-shadow 0px 1px 0px 0px rgba(0, 0, 0, 0.5)
 
@@ -64,7 +75,7 @@ div.toolbar
 div#library
 	div.elements
 		position absolute
-		top 38px
+		top 39px
 		right 0
 		bottom 0
 		left 0
@@ -103,10 +114,10 @@ div#itemEditor
 		top 0
 		left 0
 		right 0
-		bottom 36px
+		bottom 39px
 		overflow-y auto
 
-		label
+		label, div.label
 			display block
 			font-weight bold
 			clear left
@@ -120,25 +131,6 @@ div#itemEditor
 
 			input, select, button
 				float left
-
-		div.templateData
-			label span
-				background darkbgcolor
-				border-radius 2px
-				box-shadow 0px 1px 0px 0px #737373
-				border 1px solid #303030
-				color #FFF
-				text-shadow 0px -1px 0px #333333
-				padding 1px 4px
-				margin 2px
-				width 75px
-				height 16px
-			input.key
-				width 75px
-
-			button
-				width 22px
-				height 20px
 
 	div.toolbar
 		top auto
