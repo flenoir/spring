@@ -4,11 +4,9 @@ var loadedWindow = function () {
 	$(window).on("keydown", global.keyPress);
 }
 
-$(document).ready(function () {
-	if (global.isRunning) {
-		loadedWindow();
-		return;
-	}
+if (global.isRunning) {
+	loadedWindow();
+} else {
 	global.isRunning = true;
 
 	var CasparCG = require("caspar-cg");
@@ -42,9 +40,8 @@ $(document).ready(function () {
 		}
 	};
 
-
 	loadedWindow();
-});
+}
 
 angular.module("cg", []).directive("ngRightClick", function ($parse) {
 	return function (scope, element, attr) {

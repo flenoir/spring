@@ -89,9 +89,9 @@ var elementEditorCtrl = function ($scope) {
 		}
 
 		if (data.type == "template") {
-			ccg.loadTemplate($scope.previewChannel, data.src, true, $scope.data.data);
+			ccg.loadTemplate($scope.previewChannel, data.src, true, data.data);
 			$scope.clearOnClose = true;
 			return;
 		}
-	}
+	};
 };

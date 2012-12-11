@@ -1,11 +1,13 @@
 var gui = require("nw.gui");
 var _ = require("underscore");
 var fs = require("fs");
+var ccg;
 
 var elementsCtrl = function ($scope) {
+	ccg = global.ccg;
 	$scope.elements = [];
-	$scope.channel = "2-1";
-	$scope.previewChannel = "1-1";
+	$scope.channel = "1-1";
+	$scope.previewChannel = "2-1";
 	$scope.filePath = false;
 	$scope.sort = function (item) {
 		console.log(item);
@@ -169,6 +171,24 @@ var elementsCtrl = function ($scope) {
 		$scope.$apply();
 	};
 
+	$scope.runElement = function (number) {
+		var data = getElement(number);
+
+		if (!data) return;
+
+		if (data.type == "media") {
+			ccg.play($scope.channel, data.src);
+			$scope.clearOnClose = true;
+			return;
+		}
+
+		if (data.type == "template") {
+			ccg.loadTemplate($scope.channel, data.src, true, data.data);
+			$scope.clearOnClose = true;
+			return;
+		}
+	};
+
 
 	var menu = new gui.Menu({type: "menubar"});
 	var fileMenu  = new gui.Menu();
@@ -199,6 +219,85 @@ var elementsCtrl = function ($scope) {
 	editMenu.append(new gui.MenuItem({label: "Settings"}));
 
 	gui.Window.get().menu = menu;
+
+	$scope.loadNumber = "";
+	var numberTimer = false;
+
+	$("body").on("keyup", function (event) {
+		// check for numeric keypad
+		if (event.keyCode >= 96 && event.keyCode <= 105) {
+			var number = event.keyCode - 96;
+
+			$scope.loadNumber += "" + number;
+			$scope.$apply();
+
+			if (numberTimer) clearTimeout(numberTimer);
+			numberTimer = setTimeout(function () {
+				$scope.loadNumber = "";
+				$scope.$apply();
+			}, 1500);
+
+			event.preventDefault();
+			return;
+		}
+
+		switch (event.keyCode) {
+			// del - clear number
+			case 110:
+				if (numberTimer) clearTimeout(numberTimer);
+
+				$scope.loadNumber = "";
+				$scope.$apply();
+				event.preventDefault();
+				break;
+			// enter - select
+			case 13:
+				if (numberTimer) clearTimeout(numberTimer);
+
+				$scope.selectedElement = parseInt($scope.loadNumber, 10);
+				$scope.loadNumber = "";
+				$scope.$apply();
+				event.preventDefault();
+				break;
+			// + - run selected
+			case 107:
+				$scope.runElement($scope.selectedElement);
+				break;
+			// - - cue selected
+			case 109:
+				var data = getElement($scope.selectedElement);
+
+				if (!data) break;
+
+				if (data.type == "media") {
+					ccg.loadBg($scope.channel, data.src, {auto: true});
+					$scope.clearOnClose = true;
+					return;
+				}
+
+				if (data.type == "template") {
+					ccg.loadTemplate($scope.channel, data.src, false, data.data);
+					$scope.clearOnClose = true;
+					return;
+				}
+				break;
+			// F5 - play
+			case 116:
+				break;
+			// F6 - stop
+			case 117:
+				ccg.stopTemplate($scope.channel);
+				break;
+			// F7 - next
+			case 118:
+				ccg.advanceTemplate($scope.channel);
+				break;
+			// F8 - clear
+			case 119:
+				ccg.clear($scope.channel);
+				break;
+		}
+	});
 
 	if (gui.App.argv) {
 		var path = gui.App.argv[0];
