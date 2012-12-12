@@ -91,7 +91,7 @@ var elementsCtrl = function ($scope) {
 		}
 
 		return -1;
-	}
+	};
 
 	var getElement = function (number) {
 		var index = getElementIndex(number);
@@ -103,10 +103,12 @@ var elementsCtrl = function ($scope) {
 	var setElement = function (number, data) {
 		var index = getElementIndex(number);
 
-		if (!index) return;
-
-		$scope.elements[index] = data;
-	}
+		if (index == -1) {
+			$scope.elements.push(data);
+		} else {
+			$scope.elements[index] = data;
+		}
+	};
 
 	var getNextNumber = function (number) {
 		while (getElement(number) != false) {
@@ -114,7 +116,7 @@ var elementsCtrl = function ($scope) {
 		}
 
 		return number;
-	}
+	};
 
 	$scope.saveFileAs = function () {
 		$scope.filePath = false;
@@ -140,18 +142,15 @@ var elementsCtrl = function ($scope) {
 		elementContextMenu.popup(event.clientX, event.clientY);
 	};
 
-	global.editElementCallback = function (originalNumber, data) {
-		setElement(originalNumber, data);
+	global.editElementCallback = function (isNew, data) {
+		if (isNew) {
+			$scope.elements.push(data);
+			console.log("is new");
+		}
 		$scope.$apply();
 	}
 
 	$scope.editElement = function (element) {
-		if (typeof(element) != "object") {
-			console.log("get element", element);
-			element = getElement(element);
-			console.log("got element", element);
-		}
-
 		global.editElement = element;
 
 		var newWin = gui.Window.get(window.open("elementEditor.html"));
@@ -161,6 +160,7 @@ var elementsCtrl = function ($scope) {
 	}
 
 	$scope.newElement = function () {
+		global.isNewElement = true;
 		$scope.editElement({
 			number: getNextNumber($scope.selectedElement | 100)
 		});

@@ -4,8 +4,9 @@ var ccg = global.ccg;
 
 var elementEditorCtrl = function ($scope) {
 	$scope.data = global.editElement;
-	$scope.originalNumber = $scope.data.number;
+	$scope.isNew = global.isNewElement;
 	global.editElement = false;
+	global.isNewElement = false;
 	$scope.previewChannel = global.previewChannel;
 
 	$scope.types = {
@@ -65,10 +66,12 @@ var elementEditorCtrl = function ($scope) {
 	};
 
 	$scope.done = function () {
-		global.editElementCallback($scope.originalNumber, $scope.data);
+		global.editElementCallback($scope.isNew, $scope.data);
+
 		if ($scope.clearOnClose) {
 			ccg.clear($scope.previewChannel);
 		}
+
 		window.close();
 	}
 
@@ -76,6 +79,7 @@ var elementEditorCtrl = function ($scope) {
 		if ($scope.clearOnClose) {
 			ccg.clear($scope.previewChannel);
 		}
+
 		window.close();
 	};
 
