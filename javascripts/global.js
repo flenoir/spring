@@ -1,4 +1,5 @@
 var gui = require("nw.gui");
+var fs = require("fs");
 
 var loadedWindow = function () {
 	$(window).on("keydown", global.keyPress);
@@ -10,10 +11,55 @@ if (global.isRunning) {
 	global.isRunning = true;
 
 	var CasparCG = require("caspar-cg");
-	var ccg = global.ccg = new CasparCG("localhost", 5250);
+	var ccg = global.ccg = new CasparCG();
 
 	ccg.on("error", function (err) {
 		console.log("Error:", err);
+	});
+
+	var defaultSettings = {
+		casparCg: {
+			address: "localhost",
+			port: 5250
+		},
+		playout1: {
+			channel: 1,
+			videoLayer: 1,
+			templateBgLayer: 2,
+			templateLayer: 3
+		},
+		preview: {
+			channel: 2
+		}
+	};
+
+	fs.exists("settings.json", function (exists) {
+		if (!exists) {
+			global.settings = defaultSettings;
+
+			fs.writeFile("settings.json", JSON.stringify(defaultSettings), function (err) {
+				if (err) {
+					alert("Error saving settings file");
+					return;
+				}
+			});
+			return;
+		}
+
+		fs.readFile("settings.json", function (err, data) {
+			if (err ||!data) {
+				alert("Error reading settings.json");
+				global.settings = defaultSettings;
+				return;
+			}
+
+			try {
+				global.settings = JSON.parse(data);
+			} catch (err) {
+				alert("Error reading settings.json");
+				global.settings = defaultSettings;
+			}
+		});
 	});
 
 	ccg.connect();

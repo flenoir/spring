@@ -121,8 +121,6 @@ div#library
 		font-size 14px
 
 div#itemEditor
-	padding 10px
-
 	div.editor
 		position absolute
 		top 0
@@ -130,6 +128,7 @@ div#itemEditor
 		right 0
 		bottom 39px
 		overflow-y auto
+		padding 10px
 
 		label, div.label
 			display block
@@ -141,6 +140,40 @@ div#itemEditor
 			span
 				float left
 				width 50px
+				padding 6px
+
+			input, select, button
+				float left
+
+	div.toolbar
+		top auto
+		bottom 0
+		button, label
+			float right
+
+		.left
+			float left
+
+div#settings
+	div.editor
+		position absolute
+		top 0
+		left 0
+		right 0
+		bottom 39px
+		overflow-y auto
+		padding 10px
+
+		label, div.label
+			display block
+			font-weight bold
+			clear left
+			margin 3px
+			overflow hidden
+
+			span
+				float left
+				width 150px
 				padding 6px
 
 			input, select, button

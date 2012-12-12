@@ -73,7 +73,7 @@ var elementEditorCtrl = function ($scope) {
 		}
 
 		window.close();
-	}
+	};
 
 	$scope.cancel = function () {
 		if ($scope.clearOnClose) {

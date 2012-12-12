@@ -148,16 +148,20 @@ var elementsCtrl = function ($scope) {
 			console.log("is new");
 		}
 		$scope.$apply();
-	}
+	};
 
 	$scope.editElement = function (element) {
 		global.editElement = element;
 
-		var newWin = gui.Window.get(window.open("elementEditor.html"));
-		newWin.setMinimumSize(400, 340);
-		newWin.resizeTo(550, 400);
-		newWin.setPosition("center");
-	}
+		var newWin = gui.Window.open("elementEditor.html",{
+			position: "center",
+			toolbar: false,
+			width: 550,
+			height: 400,
+			min_width: 400,
+			min_height: 340
+		});
+	};
 
 	$scope.newElement = function () {
 		global.isNewElement = true;
@@ -189,12 +193,30 @@ var elementsCtrl = function ($scope) {
 		}
 	};
 
+	$scope.settings = function () {
+		var newWin = gui.Window.open("settings.html",{
+			position: "center",
+			toolbar: false,
+			width: 400,
+			height: 450,
+			resizable: false,
+			"always-on-top": true
+		});
+	};
+
+	$scope.about = function () {
+		var newWin = gui.Window.open("https://github.com/respectTheCode/spring",{
+			position: "center"
+		});
+	};
 
 	var menu = new gui.Menu({type: "menubar"});
 	var fileMenu  = new gui.Menu();
 	var editMenu  = new gui.Menu();
+	var helpMenu  = new gui.Menu();
 	menu.append(new gui.MenuItem({label: "File", submenu: fileMenu}));
 	menu.append(new gui.MenuItem({label: "Edit", submenu: editMenu}));
+	menu.append(new gui.MenuItem({label: "Help", submenu: helpMenu}));
 	fileMenu.append(new gui.MenuItem({
 		label: "New",
 		click: $scope.newFile
@@ -216,71 +238,103 @@ var elementsCtrl = function ($scope) {
 		click: $scope.newElement
 	}));
 	editMenu.append(new gui.MenuItem({type: "separator"}));
-	editMenu.append(new gui.MenuItem({label: "Settings"}));
+	editMenu.append(new gui.MenuItem({
+		label: "Settings",
+		click: $scope.settings
+	}));
+	helpMenu.append(new gui.MenuItem({
+		label: "About",
+		click: $scope.about
+	}));
 
 	gui.Window.get().menu = menu;
 
 	$scope.loadNumber = "";
 	var numberTimer = false;
 
-	$("body").on("keyup", function (event) {
-		// check for numeric keypad
-		if (event.keyCode >= 96 && event.keyCode <= 105) {
-			var number = event.keyCode - 96;
+	$(window).on("keyup", function (event) {
+		if (!$(event.target).is("input,textarea,select")) {
+			console.log("is form field");
+			// check for numeric keypad
+			if (event.keyCode >= 96 && event.keyCode <= 105) {
+				var number = event.keyCode - 96;
 
-			$scope.loadNumber += "" + number;
-			$scope.$apply();
-
-			if (numberTimer) clearTimeout(numberTimer);
-			numberTimer = setTimeout(function () {
-				$scope.loadNumber = "";
+				$scope.loadNumber += "" + number;
 				$scope.$apply();
-			}, 1500);
 
-			event.preventDefault();
-			return;
+				if (numberTimer) clearTimeout(numberTimer);
+				numberTimer = setTimeout(function () {
+					$scope.loadNumber = "";
+					$scope.$apply();
+				}, 1500);
+
+				event.preventDefault();
+				return;
+			}
+
+			switch (event.keyCode) {
+				// del - clear number
+				case 110:
+					if (numberTimer) clearTimeout(numberTimer);
+
+					$scope.loadNumber = "";
+					$scope.$apply();
+					event.preventDefault();
+					break;
+				// enter - select
+				case 13:
+					if (numberTimer) clearTimeout(numberTimer);
+
+					$scope.selectedElement = parseInt($scope.loadNumber, 10);
+					$scope.loadNumber = "";
+					$scope.$apply();
+					event.preventDefault();
+					break;
+				// + - run selected
+				case 107:
+					$scope.runElement($scope.selectedElement);
+					break;
+				// - - cue selected
+				case 109:
+					var data = getElement($scope.selectedElement);
+
+					if (!data) break;
+
+					if (data.type == "media") {
+						ccg.loadBg($scope.channel, data.src, {auto: true});
+						$scope.clearOnClose = true;
+						return;
+					}
+
+					if (data.type == "template") {
+						ccg.loadTemplate($scope.channel, data.src, false, data.data);
+						$scope.clearOnClose = true;
+						return;
+					}
+					break;
+			}
+		} else {
+			switch (event.keyCode) {
+				case 27:
+					$(event.target).blur();
+					break;
+			}
 		}
 
+		if (event.ctrlKey || event.metaKey) {
+			switch (event.keyCode) {
+				// ctrl + s
+				case 83:
+					$scope.saveFile();
+					break;
+				// ctrl + o
+				case 79:
+					$scope.openFile();
+					break;
+			}
+		}
+		
 		switch (event.keyCode) {
-			// del - clear number
-			case 110:
-				if (numberTimer) clearTimeout(numberTimer);
-
-				$scope.loadNumber = "";
-				$scope.$apply();
-				event.preventDefault();
-				break;
-			// enter - select
-			case 13:
-				if (numberTimer) clearTimeout(numberTimer);
-
-				$scope.selectedElement = parseInt($scope.loadNumber, 10);
-				$scope.loadNumber = "";
-				$scope.$apply();
-				event.preventDefault();
-				break;
-			// + - run selected
-			case 107:
-				$scope.runElement($scope.selectedElement);
-				break;
-			// - - cue selected
-			case 109:
-				var data = getElement($scope.selectedElement);
-
-				if (!data) break;
-
-				if (data.type == "media") {
-					ccg.loadBg($scope.channel, data.src, {auto: true});
-					$scope.clearOnClose = true;
-					return;
-				}
-
-				if (data.type == "template") {
-					ccg.loadTemplate($scope.channel, data.src, false, data.data);
-					$scope.clearOnClose = true;
-					return;
-				}
-				break;
 			// F5 - play
 			case 116:
 				break;
