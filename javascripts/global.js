@@ -23,7 +23,7 @@ if (global.isRunning) {
 			address: "localhost",
 			port: 5250
 		},
-		playout1: {
+		playout: {
 			channel: 1,
 			videoLayer: 1,
 			templateBgLayer: 2,

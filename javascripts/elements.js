@@ -9,6 +9,7 @@ var elementsCtrl = function ($scope) {
 	$scope.channel = "1-1";
 	$scope.previewChannel = "2-1";
 	$scope.filePath = false;
+	$scope.autoPreview = true;
 	$scope.sort = function (item) {
 		console.log(item);
 		return parseInt(item.number, 10);
@@ -133,8 +134,30 @@ var elementsCtrl = function ($scope) {
 		$scope.elementContextMenuNumber = false;
 	}}));
 
-	$scope.selectElement = function (number) {
+	$scope.selectElement = function (number, event) {
+		if (event) event.stopPropagation();
 		$scope.selectedElement = number;
+
+		if ($scope.autoPreview) {
+			var data = getElement(number);
+
+			if (!data) {
+				ccg.clear(global.settings.preview.channel + "-1");
+				return;
+			}
+
+			if (data.type == "media") {
+				ccg.play(global.settings.preview.channel + "-1", data.src, {loop: true});
+				$scope.clearOnClose = true;
+				return;
+			}
+
+			if (data.type == "template") {
+				ccg.loadTemplate(global.settings.preview.channel + "-1", data.src, true, data.data);
+				$scope.clearOnClose = true;
+				return;
+			}
+		}
 	}
 
 	$scope.elementContextMenu = function (event, number) {
@@ -181,13 +204,13 @@ var elementsCtrl = function ($scope) {
 		if (!data) return;
 
 		if (data.type == "media") {
-			ccg.play($scope.channel, data.src);
+			ccg.play(global.settings.playout.channel + "-" + global.settings.playout.videoLayer, data.src);
 			$scope.clearOnClose = true;
 			return;
 		}
 
 		if (data.type == "template") {
-			ccg.loadTemplate($scope.channel, data.src, true, data.data);
+			ccg.loadTemplate(global.settings.playout.channel + "-" + global.settings.playout.templateLayer, data.src, true, data.data);
 			$scope.clearOnClose = true;
 			return;
 		}
@@ -285,7 +308,7 @@ var elementsCtrl = function ($scope) {
 				case 13:
 					if (numberTimer) clearTimeout(numberTimer);
 
-					$scope.selectedElement = parseInt($scope.loadNumber, 10);
+					$scope.selectElement(parseInt($scope.loadNumber, 10));
 					$scope.loadNumber = "";
 					$scope.$apply();
 					event.preventDefault();
@@ -301,13 +324,13 @@ var elementsCtrl = function ($scope) {
 					if (!data) break;
 
 					if (data.type == "media") {
-						ccg.loadBg($scope.channel, data.src, {auto: true});
+						ccg.loadBg(global.settings.playout.channel + "-" + global.settings.playout.videoLayer, data.src, {auto: true});
 						$scope.clearOnClose = true;
 						return;
 					}
 
 					if (data.type == "template") {
-						ccg.loadTemplate($scope.channel, data.src, false, data.data);
+						ccg.loadTemplate(global.settings.playout.channel + "-" + global.settings.playout.templateLayer, data.src, false, data.data);
 						$scope.clearOnClose = true;
 						return;
 					}

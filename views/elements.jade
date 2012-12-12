@@ -11,12 +11,12 @@ block content
 		div.toolbar
 			button.right(ng-click="newElement()") New Element
 
-			label Play Channel
-				input(type="text",ng-model="channel",size="4")
-			label Preview Channel
-				input(type="text",ng-model="previewChannel",size="4")
-		div.elements
-			div.element(ng-repeat="(index, element) in elements | orderBy:'number'",ng-click="selectElement(element.number)",ng-right-click="elementContextMenu($event, element.number)",ng-dblclick="editElement(element)",ng-class="{selected: element.number == selectedElement}")
+			label
+				input(type="checkbox",ng-model="autoPreview")
+				span Preview Selected Element
+
+		div.elements(ng-click="selectElement(-1, $event)")
+			div.element(ng-repeat="(index, element) in elements | orderBy:'number'",ng-click="selectElement(element.number, $event)",ng-right-click="elementContextMenu($event, element.number)",ng-dblclick="editElement(element)",ng-class="{selected: element.number == selectedElement}")
 				div.number {{element.number}}
 				div.file {{element.name}}
 				button(ng-click="runElement(element.number)") >
