@@ -4,7 +4,7 @@ var  settingsCtrl = function ($scope) {
 	$scope.$watch("data", function () {
 		global.settings = $scope.data;
 
-		fs.writeFile("settings.json", JSON.stringify($scope.data), function (err) {
+		fs.writeFile(global.settingsPath, JSON.stringify($scope.data), function (err) {
 			if (err) {
 				alert("Error saving settings file");
 				return;

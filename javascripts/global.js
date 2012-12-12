@@ -1,5 +1,6 @@
 var gui = require("nw.gui");
 var fs = require("fs");
+var path = require("path");
 
 var loadedWindow = function () {
 	$(window).on("keydown", global.keyPress);
@@ -33,11 +34,15 @@ if (global.isRunning) {
 		}
 	};
 
-	fs.exists("settings.json", function (exists) {
+	global.settingsPath = path.join(path.dirname(process.execPath), "settings.json");
+
+	fs.exists(global.settingsPath, function (exists) {
 		if (!exists) {
 			global.settings = defaultSettings;
 
-			fs.writeFile("settings.json", JSON.stringify(defaultSettings), function (err) {
+			console.log("path", process.execPath);
+
+			fs.writeFile(global.settingsPath, JSON.stringify(defaultSettings), function (err) {
 				if (err) {
 					alert("Error saving settings file");
 					return;
@@ -46,7 +51,7 @@ if (global.isRunning) {
 			return;
 		}
 
-		fs.readFile("settings.json", function (err, data) {
+		fs.readFile(global.settingsPath, function (err, data) {
 			if (err ||!data) {
 				alert("Error reading settings.json");
 				global.settings = defaultSettings;
