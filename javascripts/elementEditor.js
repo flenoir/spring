@@ -42,6 +42,10 @@ var elementEditorCtrl = function ($scope) {
 		}
 	});
 
+	$scope.$watch("data.name", function () {
+		document.title = "Edit - " + $scope.data.name;
+	});
+
 	$scope.addData = function () {
 		if (!$scope.newKey || $scope.newKey === "") {
 			return;

@@ -70,24 +70,10 @@ if (global.isRunning) {
 	ccg.connect();
 
 	global.keyPress = function (e) {
-		var didAction = false;
-		// num pad / and num pad *
-		if (e.keyCode == 111 || e.keyCode == 106) {
-		}
-
-		// F12
-		if (e.keyCode == 123) {
+		// ctrl + F12
+		if ((e.ctrlKey || e.metaKey) && e.keyCode == 123) {
 			gui.Window.get(this).showDevTools();
 			didAction = true;
-		}
-
-		// ctrl+n or cmd+n
-		if ((e.ctrlKey || e.metaKey) && e.keyCode == 78) {
-		}
-
-		if (didAction) {
-			e.preventDefault();
-			return false;
 		}
 	};
 

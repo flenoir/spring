@@ -6,18 +6,12 @@ var ccg;
 var elementsCtrl = function ($scope) {
 	ccg = global.ccg;
 	$scope.elements = [];
-	$scope.channel = "1-1";
-	$scope.previewChannel = "2-1";
 	$scope.filePath = false;
 	$scope.autoPreview = true;
 	$scope.sort = function (item) {
 		console.log(item);
 		return parseInt(item.number, 10);
 	};
-
-	$scope.$watch("previewChannel", function () {
-		global.previewChannel = $scope.previewChannel;
-	});
 
 	$scope.newFile = function () {
 		$scope.filePath = false;
@@ -112,7 +106,9 @@ var elementsCtrl = function ($scope) {
 	};
 
 	var getNextNumber = function (number) {
-		while (getElement(number) != false) {
+		console.log(number);
+		while (getElementIndex(number) != -1) {
+			console.log(number, getElementIndex(number));
 			number++;
 		}
 
@@ -180,16 +176,21 @@ var elementsCtrl = function ($scope) {
 			position: "center",
 			toolbar: false,
 			width: 550,
-			height: 400,
-			min_width: 400,
-			min_height: 340
+			height: 320,
+			min_width: 550,
+			max_width: 551,
+			min_height: 300,
+			max_height: 800
 		});
 	};
 
 	$scope.newElement = function () {
 		global.isNewElement = true;
+		var number  = 100;
+		if ($scope.selectedElement != -1) number = $scope.selectedElement;
+
 		$scope.editElement({
-			number: getNextNumber($scope.selectedElement | 100)
+			number: getNextNumber(number)
 		});
 	};
 
@@ -204,7 +205,7 @@ var elementsCtrl = function ($scope) {
 		if (!data) return;
 
 		if (data.type == "media") {
-			ccg.play(global.settings.playout.channel + "-" + global.settings.playout.videoLayer, data.src);
+			ccg.play(global.settings.playout.channel + "-" + global.settings.playout.videoLayer, data.src, {loop: data.loop, auto: data.auto});
 			$scope.clearOnClose = true;
 			return;
 		}
@@ -272,6 +273,12 @@ var elementsCtrl = function ($scope) {
 
 	gui.Window.get().menu = menu;
 
+	gui.Window.get().on("close", function () {
+		ccg.clear(global.settings.preview.channel + "-1");
+
+		this.close(true);
+	});
+
 	$scope.loadNumber = "";
 	var numberTimer = false;
 
@@ -324,7 +331,7 @@ var elementsCtrl = function ($scope) {
 					if (!data) break;
 
 					if (data.type == "media") {
-						ccg.loadBg(global.settings.playout.channel + "-" + global.settings.playout.videoLayer, data.src, {auto: true});
+						ccg.loadBg(global.settings.playout.channel + "-" + global.settings.playout.videoLayer, data.src, {loop: data.loop, auto: data.auto});
 						$scope.clearOnClose = true;
 						return;
 					}
@@ -358,20 +365,37 @@ var elementsCtrl = function ($scope) {
 		}
 		
 		switch (event.keyCode) {
-			// F5 - play
+			// F5 - template play
 			case 116:
+				ccg.playTemplate(global.settings.playout.channel + "-" + global.settings.playout.templateLayer);
 				break;
-			// F6 - stop
+			// F6 - template stop
 			case 117:
-				ccg.stopTemplate($scope.channel);
+				ccg.stopTemplate(global.settings.playout.channel + "-" + global.settings.playout.templateLayer);
 				break;
-			// F7 - next
+			// F7 - template clear
 			case 118:
-				ccg.advanceTemplate($scope.channel);
+				ccg.clear(global.settings.playout.channel + "-" + global.settings.playout.templateLayer);
 				break;
-			// F8 - clear
+			// F8 - template next
 			case 119:
-				ccg.clear($scope.channel);
+				ccg.adva-nceTemplate(global.settings.playout.channel + "-" + global.settings.playout.templateLayer);
+				break;
+			// F9
+			case 120:
+				ccg.play(global.settings.playout.channel + "-" + global.settings.playout.videoLayer);
+				break;
+			// F10
+			case 121:
+				ccg.stop(global.settings.playout.channel + "-" + global.settings.playout.videoLayer);
+				break;
+			// F11
+			case 122:
+				ccg.pause(global.settings.playout.channel + "-" + global.settings.playout.videoLayer);
+				break;
+			// F12
+			case 123:
+				ccg.clear(global.settings.playout.channel);
 				break;
 		}
 	});

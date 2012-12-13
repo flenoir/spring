@@ -1,6 +1,7 @@
 extends layout
 
 block head
+	title Edit
 	script(type="text/javascript",src="javascripts/elementEditor.js")
 
 block content
@@ -15,14 +16,22 @@ block content
 			label
 				span Type
 				select(ng-model="data.type",ng-options="value as label for (value, label) in types")
-			label(ng-show="data.type=='media'")
-				span File
-				select(ng-model="data.src",ng-options="file.file as file.file for file in mediaFiles")
-			label(ng-show="data.type=='template'")
-				span File
-				select(ng-model="data.src",ng-options="file.file as file.file for file in templateFiles")
+			div(ng-show="data.type=='media'")
+				label
+					span File
+					select(ng-model="data.src",ng-options="file.file as file.file for file in mediaFiles")
+				label
+					span Loop Playback
+					input(type="checkbox",ng-model="data.loop")
+				label
+					span Auto Start
+					input(type="checkbox",ng-model="data.auto")
 
 			div(ng-show="data.type=='template'")
+				label
+					span File
+					select(ng-model="data.src",ng-options="file.file as file.file for file in templateFiles")
+
 				div(ng-repeat="field in fields | orderBy:'field'")
 					label 
 						span {{field}}
@@ -32,5 +41,3 @@ block content
 			button.left(ng-click="cancel()") Cancel
 			button(ng-click="done()") Done
 			button(ng-click="preview()") Preview
-			label Channel
-				input(type="text",ng-model="previewChannel",size="4")

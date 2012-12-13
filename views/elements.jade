@@ -19,6 +19,6 @@ block content
 			div.element(ng-repeat="(index, element) in elements | orderBy:'number'",ng-click="selectElement(element.number, $event)",ng-right-click="elementContextMenu($event, element.number)",ng-dblclick="editElement(element)",ng-class="{selected: element.number == selectedElement}")
 				div.number {{element.number}}
 				div.file {{element.name}}
-				button(ng-click="runElement(element.number)") >
+				button.play(ng-click="runElement(element.number)") >
 
 		div.loadNumber(ng-show="loadNumber != ''") {{loadNumber}}

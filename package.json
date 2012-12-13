@@ -13,9 +13,11 @@
 	"main": "build/elements.html",
 	"window": {
 		"toolbar": false,
-		"width": 450,
+		"width": 400,
 		"height": 600,
-		"min_width": 450,
-		"min_height": 340
+		"min_width": 300,
+		"min_height": 340,
+		"max_width": 600,
+		"max_height": 9999
 	}
 }
