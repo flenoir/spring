@@ -400,15 +400,12 @@ var elementsCtrl = function ($scope) {
 		}
 	});
 
-	if (gui.App.argv) {
+	if (gui.App.argv.length == 1) {
 		var path = gui.App.argv[0];
 
-		if (path[0] == "\"") {
-			path = gui.App.argv.join(" ");
-			path = path.replace(/\"/g, "");
+		if (typeof(path) == "string") {
+			$scope.openFile(path);
 		}
-
-		$scope.openFile(path);
 	}
 
 	gui.App.on("open", function (e) {
