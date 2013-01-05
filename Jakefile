@@ -9,26 +9,13 @@ var paths = {
 	jade: {src: "./views", dest: "./build"},
 	javascripts: {src: "./javascripts", dest: "./build/javascripts"},
 	public: {src: "./public", dest: "./build"},
-	package: {src: ["./build", "./node_modules"], dest: "../app.zip"}
+	package: {src: ["./build", "./node_modules"], dest: "./spring.zip"}
 };
 
 var isWin = !!process.platform.match(/^win/);
 
 desc("Build and run app");
 task("default", ["build:jade", "build:stylus", "build:public", "run"], {async: true});
-
-desc("Build and run app in developer mode");
-task("dev", ["build:jade", "build:stylus", "build:public"], function () {
-	if (!isWin) {
-		cmd = ["open -n -a /Applications/node-webkit.app \"./\" --args --developer"];
-	} else {
-		cmd = [
-			"cd .. && nw.exe /developer " + __dirname
-		];
-	}
-
-	jake.exec(cmd, complete);
-}, {async: true});
 
 desc("Run app");
 task("run", function () {
@@ -38,7 +25,7 @@ task("run", function () {
 		cmd = ["open -n -a /Applications/node-webkit.app \"./\""];
 	} else {
 		cmd = [
-			"cd .. && nw.exe " + __dirname
+			"nw.exe"
 		];
 	}
 
@@ -243,7 +230,7 @@ namespace("build", function () {
 			var data = archive.toBuffer();
 
 			fs.writeFile(paths.package.dest, data, function () {
-				jake.exec(["cd .. && copy /b nw.exe+app.zip cg-playout.exe"], complete);
+				jake.exec(["copy /b nw.exe+spring.zip spring.exe"], complete);
 			});
 		});
 	}, {async: true});
