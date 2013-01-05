@@ -35,11 +35,11 @@ This channel will preview the selected element. It is intended to help the opera
 	* keypad `enter` to select the element
 
 * Controlling the selected element
-	* keypad "+" plays the element on the playout channel
-	* keypad "-" loads the element in the background of the playout channel
+	* keypad `+` plays the element on the playout channel
+	* keypad `-` loads the element in the background of the playout channel
 
-* Switching playout channels
-	This is a planned feature and does not work yet. For now channel 1 is the only channel.
+* Switching playout channels (This is a planned feature and does not work yet. For now channel 1 is the only channel.)
+
 	* `F1` select playout channel 1
 	* `F2` select playout channel 2
 	* `F3` select playout channel 3
@@ -50,7 +50,6 @@ This channel will preview the selected element. It is intended to help the opera
 	* `F6` Stop template
 	* `F7` Clear template
 	* `F8` Template next
-
 	* `F9` Play media
 	* `F10` Stop media
 	* `F11` Pause media
