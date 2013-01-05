@@ -22,9 +22,10 @@ Run `jake`
 
 Run `jake build:package`
 
-## Understanding the Preview Channel
+This will make spring.exe in the root of the project. You can move spring.exe, but you must also copy the `.dll` and `.pak` files. The settings are stored in `settings.json` in the smae folder as `spring.exe`.
 
-	This channel will preview the selected element. It is intended to help the operator confirm the element they have selected.
+## Understanding the Preview Channel
+This channel will preview the selected element. It is intended to help the operator confirm the element they have selected.
 
 ## Keyboard Shortcuts
 
