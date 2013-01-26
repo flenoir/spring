@@ -169,7 +169,15 @@ var elementsCtrl = function ($scope) {
 		$scope.$apply();
 	};
 
-	$scope.editElement = function (element) {
+	$scope.editElement = function (event, element) {
+		if (!element) {
+			element = event;
+			event = null;
+		} else {
+			event.stopPropagation();
+			event.preventDefault();
+		}
+
 		global.editElement = element;
 
 		var newWin = gui.Window.open("elementEditor.html",{
