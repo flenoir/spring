@@ -30,6 +30,7 @@ if (global.isRunning) {
 			templateLayer: 3
 		},
 		preview: {
+			enabled: true,
 			channel: 2
 		}
 	};

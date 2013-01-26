@@ -11,7 +11,7 @@ block content
 		div.toolbar
 			button.right(ng-click="newElement()") New Element
 
-			label
+			label(ng-show="isPreviewEnabled()")
 				input(type="checkbox",ng-model="autoPreview")
 				span Preview Selected Element
 

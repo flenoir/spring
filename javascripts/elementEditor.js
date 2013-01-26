@@ -7,7 +7,10 @@ var elementEditorCtrl = function ($scope) {
 	$scope.isNew = global.isNewElement;
 	global.editElement = false;
 	global.isNewElement = false;
-	$scope.previewChannel = global.previewChannel;
+
+	$scope.isPreviewEnabled = function () {
+		return (global.settings.preview.enabled);
+	}
 
 	$scope.types = {
 		"media": "Media",
@@ -73,7 +76,7 @@ var elementEditorCtrl = function ($scope) {
 		global.editElementCallback($scope.isNew, $scope.data);
 
 		if ($scope.clearOnClose) {
-			ccg.clear($scope.previewChannel);
+			ccg.clear(global.settings.preview.channel);
 		}
 
 		window.close();
@@ -81,7 +84,7 @@ var elementEditorCtrl = function ($scope) {
 
 	$scope.cancel = function () {
 		if ($scope.clearOnClose) {
-			ccg.clear($scope.previewChannel);
+			ccg.clear(global.settings.preview.channel);
 		}
 
 		window.close();
@@ -91,13 +94,13 @@ var elementEditorCtrl = function ($scope) {
 		var data = $scope.data;
 
 		if (data.type == "media") {
-			ccg.play($scope.previewChannel, data.src, {loop: true});
+			ccg.play(global.settings.preview.channel, data.src, {loop: true});
 			$scope.clearOnClose = true;
 			return;
 		}
 
 		if (data.type == "template") {
-			ccg.loadTemplate($scope.previewChannel, data.src, true, data.data);
+			ccg.loadTemplate(global.settings.preview.channel, data.src, true, data.data);
 			$scope.clearOnClose = true;
 			return;
 		}

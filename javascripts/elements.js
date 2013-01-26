@@ -8,6 +8,11 @@ var elementsCtrl = function ($scope) {
 	$scope.elements = [];
 	$scope.filePath = false;
 	$scope.autoPreview = true;
+
+	$scope.isPreviewEnabled = function () {
+		return (global.settings.preview.enabled);
+	}
+
 	$scope.sort = function (item) {
 		console.log(item);
 		return parseInt(item.number, 10);
@@ -225,12 +230,12 @@ var elementsCtrl = function ($scope) {
 		}
 	};
 
-	$scope.settings = function () {
+	$scope.openSettings = function () {
 		var newWin = gui.Window.open("settings.html",{
 			position: "center",
 			toolbar: false,
 			width: 400,
-			height: 450,
+			height: 475,
 			resizable: false,
 			"always-on-top": true
 		});
@@ -272,7 +277,7 @@ var elementsCtrl = function ($scope) {
 	editMenu.append(new gui.MenuItem({type: "separator"}));
 	editMenu.append(new gui.MenuItem({
 		label: "Settings",
-		click: $scope.settings
+		click: $scope.openSettings
 	}));
 	helpMenu.append(new gui.MenuItem({
 		label: "About",
