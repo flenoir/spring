@@ -16,7 +16,7 @@ block content
 				span Preview Selected Element
 
 		div.elements(ng-click="selectElement(-1, $event)",ng-dblclick="newElement()")
-			div.element(ng-repeat="(index, element) in elements | orderBy:'number'",ng-click="selectElement(element.number, $event)",ng-right-click="elementContextMenu($event, element.number)",ng-dblclick="editElement($event, element)",ng-class="{selected: element.number == selectedElement}")
+			div.element(ng-repeat="(index, element) in elements | orderBy:'number'",ng-click="selectElement(element.number, $event)",ng-right-click="elementContextMenu($event, element)",ng-dblclick="editElement($event, element)",ng-class="{selected: element.number == selectedElement}")
 				div.number {{element.number}}
 				div.file {{element.name}}
 				button.play(ng-click="$event.stopPropagation();runElement(element.number);") >
