@@ -10,7 +10,11 @@ var elementsCtrl = function ($scope) {
 	$scope.autoPreview = true;
 
 	$scope.isPreviewEnabled = function () {
-		return (global.settings.preview.enabled);
+		return (
+			global.settings &&
+			global.settings.preview &&
+			global.settings.preview.enabled
+		);
 	}
 
 	$scope.sort = function (item) {
@@ -139,7 +143,7 @@ var elementsCtrl = function ($scope) {
 		if (event) event.stopPropagation();
 		$scope.selectedElement = number;
 
-		if ($scope.autoPreview) {
+		if ($scope.isPreviewEnabled && $scope.autoPreview) {
 			var data = getElement(number);
 
 			if (!data) {
@@ -241,9 +245,11 @@ var elementsCtrl = function ($scope) {
 		});
 	};
 
-	$scope.about = function () {
-		var newWin = gui.Window.open("https://github.com/respectTheCode/spring",{
-			position: "center"
+	$scope.openAbout = function () {
+		var newWin = gui.Window.open("https://github.com/respectTheCode/spring/blob/master/README.md", {
+			position: "center",
+			width: 1024,
+			height: 600
 		});
 	};
 
@@ -281,7 +287,7 @@ var elementsCtrl = function ($scope) {
 	}));
 	helpMenu.append(new gui.MenuItem({
 		label: "About",
-		click: $scope.about
+		click: $scope.openAbout
 	}));
 
 	gui.Window.get().menu = menu;
