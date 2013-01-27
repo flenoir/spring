@@ -481,4 +481,10 @@ var elementsCtrl = function ($scope) {
 	gui.App.on("open", function (e) {
 		$scope.openFile(e);
 	});
+
+	var win = gui.Window.get();
+	win.on("close", function () {
+		this.close();
+		gui.App.quit();
+	});
 };
