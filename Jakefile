@@ -172,9 +172,20 @@ namespace("build", function () {
 			fs.mkdir(paths["public"].dest);
 		}
 
+		if (!fs.existsSync(paths["javascripts"].dest)) {
+			fs.mkdir(paths["javascripts"].dest);
+		}
+
 		var cmd = [];
-		cmd.push("cp -rf " + paths["public"].src + "/* " + paths["public"].dest + "/");
-		cmd.push("cp -rf " + paths["javascripts"].src + "/* " + paths["javascripts"].dest + "/");
+		if (isWin) {
+			cmd.push("xcopy " + paths["public"].src.replace(/\//g, "\\") + "\\* " + paths["public"].dest.replace(/\//g, "\\") + "\\ /E /C /R /K /Y");
+			cmd.push("xcopy " + paths["javascripts"].src.replace(/\//g, "\\") + "\\* " + paths["javascripts"].dest.replace(/\//g, "\\") + "\\ /E /C /R /K /Y");
+		} else {
+			cmd.push("cp -rf" + paths["public"].src + "/* " + paths["public"].dest + "/");
+			cmd.push("cp -rf" + paths["javascripts"].src + "/* " + paths["javascripts"].dest + "/");
+		}
+
+		console.log(cmd[0], cmd[1]);
 
 		jake.exec(cmd, function () {
 			jake.logger.log("Coppied public files");
