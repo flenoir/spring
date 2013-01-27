@@ -54,3 +54,37 @@ This channel will preview the selected element. It is intended to help the opera
 	* `F10` Stop media
 	* `F11` Pause media
 	* `F12` Clear channel
+
+## API to add and modify elements
+
+This is a simple http api that allows you to add elements to a script dynamically that will not be saved as part of the script. This can be used for things like competitor lower thirds. A seporate stats system calls the API to add all competitors to the script. It then calls the API again when competitor stats change. If an element number already exists and the existing element was created by the API it is replaced. Elements that are created by hand will not be overwritten by the API.
+
+Send an HTTP `GET` or `POST` to `http://127.0.0.1:3000`. Pass one parameter `elements` with a JSON encoded array of elements in.
+
+Example JSON
+
+	[
+		{
+			"name": "Competior 1 Score - 9.99",
+			"number": 1001,
+			"type": "template",
+			"src": "competior_lower_third",
+			"data": {
+				"f0": "Competior 1",
+				"f1": "9.99"
+			}
+		}, {
+			"name": "Competior 2 Score - 9.5",
+			"number": 1002,
+			"type": "template",
+			"src": "competior_lower_third",
+			"data": {
+				"f0": "Competior 2",
+				"f1": "9.5"
+			}
+		}
+	]
+
+Example GET
+
+	http://127.0.0.1:3000/api?elements=[{"name":"Competior 1 Score - 9.99","number":1001,"type":"template","src":"competior_lower_third","data":{"f0":"Competior 1","f1":"9.99"}},{"name":"Competior 2 Score - 9.5","number":1002,"type":"template","src":"competior_lower_third","data":{"f0":"Competior 2","f1":"9.5"}}]

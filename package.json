@@ -8,7 +8,8 @@
 		"jade": "*",
 		"stylus": "*",
 		"node-native-zip": "*",
-		"underscore": "*"
+		"underscore": "*",
+		"express": "3.1.0"
 	},
 	"main": "build/elements.html",
 	"window": {

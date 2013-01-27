@@ -2,6 +2,8 @@ var gui = require("nw.gui");
 var _ = require("underscore");
 var fs = require("fs");
 var ccg;
+var ApiServer = require("./javascripts/apiServer");
+var apiServer = new ApiServer();
 
 var elementsCtrl = function ($scope) {
 	ccg = global.ccg;
@@ -27,6 +29,30 @@ var elementsCtrl = function ($scope) {
 		$scope.elements = [];
 		$scope.$apply();
 	}
+
+	apiServer.start();
+	apiServer.on("newElements", function (newElements) {
+		console.log("new elements", newElements);
+
+		_.each(newElements, function (element) {
+			element.temp = true;
+			var existingElement = getElement(element.number);
+
+			if (existingElement && !existingElement.temp) {
+				console.log("API Conflict with exisitng element ", element.number);
+				return;
+			}
+
+			if (existingElement) {
+				var index = getElementIndex(element.number);
+				$scope.elements[index] = element;
+				return;
+			}
+
+			$scope.elements.push(element);
+		});
+		$scope.$apply();
+	});
 
 	$scope.openFile = function (path) {
 		if (!path) {
@@ -70,8 +96,12 @@ var elementsCtrl = function ($scope) {
 			return;
 		}
 
+		var elements = _.filter($scope.elements, function (element) {
+			return (!element.temp);
+		});
+
 		var data = {
-			elements: $scope.elements
+			elements: elements
 		};
 
 		data = angular.toJson(data);
@@ -86,6 +116,22 @@ var elementsCtrl = function ($scope) {
 			$scope.$apply();
 		});
 	};
+
+	$scope.removeTempElements = function () {
+		var removeNumbers = [];
+
+		_.each($scope.elements, function (element) {
+			if (element.temp) {
+				removeNumbers.push(element.number);
+			}
+		});
+
+		_.each(removeNumbers, function(number) {
+			$scope.elements.splice(getElementIndex(number), 1);
+		});
+
+		$scope.$apply();
+	}
 
 	var getElementIndex = function (number) {
 		for (var index in $scope.elements) {
@@ -279,6 +325,11 @@ var elementsCtrl = function ($scope) {
 	editMenu.append(new gui.MenuItem({
 		label: "New Element",
 		click: $scope.newElement
+	}));
+	editMenu.append(new gui.MenuItem({type: "separator"}));
+	editMenu.append(new gui.MenuItem({
+		label: "Remove API Element",
+		click: $scope.removeTempElements
 	}));
 	editMenu.append(new gui.MenuItem({type: "separator"}));
 	editMenu.append(new gui.MenuItem({
