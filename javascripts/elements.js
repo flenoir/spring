@@ -74,7 +74,7 @@ var elementsCtrl = function ($scope) {
 			elements: $scope.elements
 		};
 
-		data = JSON.stringify(data);
+		data = angular.toJson(data);
 
 		fs.writeFile($scope.filePath, data, function (err) {
 			if (err) {
