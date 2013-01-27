@@ -185,8 +185,6 @@ namespace("build", function () {
 			cmd.push("cp -rf" + paths["javascripts"].src + "/* " + paths["javascripts"].dest + "/");
 		}
 
-		console.log(cmd[0], cmd[1]);
-
 		jake.exec(cmd, function () {
 			jake.logger.log("Coppied public files");
 			complete();
