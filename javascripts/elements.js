@@ -10,6 +10,7 @@ var elementsCtrl = function ($scope) {
 	$scope.elements = [];
 	$scope.filePath = false;
 	$scope.autoPreview = true;
+	$scope.selectedElement = -1;
 
 	$scope.isPreviewEnabled = function () {
 		return (
