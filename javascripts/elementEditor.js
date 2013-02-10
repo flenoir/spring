@@ -40,37 +40,23 @@ var elementEditorCtrl = function ($scope) {
 				}
 
 				$scope.fields = data.fields;
+
+				if (!$scope.data.data) {
+					$scope.data.data = {};
+				}
+
 				$scope.$apply();
 			});
+		} else {
+			if ($scope.data.data) {
+				delete $scope.data.data;
+			}
 		}
 	});
 
 	$scope.$watch("data.name", function () {
 		document.title = "Edit - " + $scope.data.name;
 	});
-
-	$scope.addData = function () {
-		if (!$scope.newKey || $scope.newKey === "") {
-			return;
-		}
-
-		if (!$scope.data.data) {
-			$scope.data.data = {};
-		}
-
-		if (!$scope.templateData) {
-			$scope.templateData = [];
-		}
-
-		$scope.data.data[$scope.newKey] = $scope.newValue;
-
-		$scope.newKey = "";
-		$scope.newValue = "";
-	};
-
-	$scope.removeData = function (key) {
-		delete $scope.data.data[key];
-	};
 
 	$scope.done = function () {
 		global.editElementCallback($scope.isNew, $scope.data);
