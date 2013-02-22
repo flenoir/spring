@@ -450,7 +450,7 @@ var elementsCtrl = function ($scope) {
 				break;
 			// F8 - template next
 			case 119:
-				ccg.adva-nceTemplate(global.settings.playout.channel + "-" + global.settings.playout.templateLayer);
+				ccg.advanceTemplate(global.settings.playout.channel + "-" + global.settings.playout.templateLayer);
 				break;
 			// F9
 			case 120:
