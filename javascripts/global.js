@@ -65,10 +65,10 @@ if (global.isRunning) {
 				alert("Error reading settings.json");
 				global.settings = defaultSettings;
 			}
+
+			ccg.connect(global.settings.casparCg.address, global.settings.casparCg.port);
 		});
 	});
-
-	ccg.connect();
 
 	global.keyPress = function (e) {
 		// ctrl + F12
