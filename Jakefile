@@ -42,7 +42,7 @@ task("clean", function () {
 	jake.exec([cmd], function () {
 		jake.logger.log("Cleaned project");
 		complete();
-	})
+	});
 }, {async: true});
 
 namespace("build", function () {
@@ -181,8 +181,9 @@ namespace("build", function () {
 			cmd.push("xcopy " + paths["public"].src.replace(/\//g, "\\") + "\\* " + paths["public"].dest.replace(/\//g, "\\") + "\\ /E /C /R /K /Y");
 			cmd.push("xcopy " + paths["javascripts"].src.replace(/\//g, "\\") + "\\* " + paths["javascripts"].dest.replace(/\//g, "\\") + "\\ /E /C /R /K /Y");
 		} else {
-			cmd.push("cp -rf" + paths["public"].src + "/* " + paths["public"].dest + "/");
-			cmd.push("cp -rf" + paths["javascripts"].src + "/* " + paths["javascripts"].dest + "/");
+			console.log("cp -rf " + paths["javascripts"].src + "/* " + paths["javascripts"].dest + "/");
+			cmd.push("cp -rf " + paths["public"].src + "/* " + paths["public"].dest + "/");
+			cmd.push("cp -rf " + paths["javascripts"].src + "/* " + paths["javascripts"].dest + "/");
 		}
 
 		jake.exec(cmd, function () {
