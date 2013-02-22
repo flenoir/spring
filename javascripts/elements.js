@@ -353,7 +353,7 @@ var elementsCtrl = function ($scope) {
 	$scope.loadNumber = "";
 	var numberTimer = false;
 
-	$(window).on("keyup", function (event) {
+	$(window).on("keydown", function (event) {
 		if (!$(event.target).is("input,textarea,select")) {
 			console.log("is form field");
 			// check for numeric keypad
