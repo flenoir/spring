@@ -281,6 +281,16 @@ var elementsCtrl = function ($scope) {
 		}
 	};
 
+
+	$scope.clearMedia = function () {
+		ccg.clear(global.settings.playout.channel + "-" + global.settings.playout.videoLayer);
+	};
+
+	$scope.clearTemplate = function () {
+		ccg.clear(global.settings.playout.channel + "-" + global.settings.playout.templateLayer);
+		ccg.clear(global.settings.playout.channel + "-" + global.settings.playout.templateBgLayer);
+	};
+
 	$scope.openSettings = function () {
 		var newWin = gui.Window.open("settings.html",{
 			position: "center",
