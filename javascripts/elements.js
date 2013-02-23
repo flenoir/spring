@@ -281,6 +281,23 @@ var elementsCtrl = function ($scope) {
 		}
 	};
 
+	$scope.queueElement = function (number) {
+		var data = getElement(number);
+
+		if (!data) return;
+
+		if (data.type == "media") {
+			ccg.loadBg(global.settings.playout.channel + "-" + global.settings.playout.videoLayer, data.src, {loop: data.loop, auto: true});
+			$scope.clearOnClose = true;
+			return;
+		}
+
+		if (data.type == "template") {
+			ccg.loadTemplate(global.settings.playout.channel + "-" + global.settings.playout.templateLayer, data.src, false, data.data);
+			$scope.clearOnClose = true;
+			return;
+		}
+	};
 
 	$scope.clearMedia = function () {
 		ccg.clear(global.settings.playout.channel + "-" + global.settings.playout.videoLayer);
@@ -407,21 +424,7 @@ var elementsCtrl = function ($scope) {
 					break;
 				// - - cue selected
 				case 109:
-					var data = getElement($scope.selectedElement);
-
-					if (!data) break;
-
-					if (data.type == "media") {
-						ccg.loadBg(global.settings.playout.channel + "-" + global.settings.playout.videoLayer, data.src, {loop: data.loop, auto: data.auto});
-						$scope.clearOnClose = true;
-						return;
-					}
-
-					if (data.type == "template") {
-						ccg.loadTemplate(global.settings.playout.channel + "-" + global.settings.playout.templateLayer, data.src, false, data.data);
-						$scope.clearOnClose = true;
-						return;
-					}
+					$scope.queueElement($scope.selectedElement);
 					break;
 			}
 		} else {
@@ -444,7 +447,7 @@ var elementsCtrl = function ($scope) {
 					break;
 			}
 		}
-		
+
 		switch (event.keyCode) {
 			// F5 - template play
 			case 116:
