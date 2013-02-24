@@ -81,21 +81,36 @@ if (global.isRunning) {
 	loadedWindow();
 }
 
-angular.module("cg", []).directive("ngRightClick", function ($parse) {
-	return function (scope, element, attr) {
-		element.bind("contextmenu", function (event) {
-			event.preventDefault();
+angular.module("cg", [])
+	.directive("ngRightClick", function ($parse) {
+		return function (scope, element, attr) {
+			element.bind("contextmenu", function (event) {
+				event.preventDefault();
 
-			var fn = $parse(attr["ngRightClick"]);
-			scope.$apply(function() {
-				fn(scope, {
-					$event: event
+				var fn = $parse(attr["ngRightClick"]);
+				scope.$apply(function() {
+					fn(scope, {
+						$event: event
+					});
 				});
+				return false;
 			});
-			return false;
-		});
-	};
-});
+		};
+	})
+	.filter("timecode", function () {
+		return function (input) {
+			var time = new Date();
+			time.setTime(Math.round(input / 30 * 1000));
+
+			var out = "";
+			out += ("00" + time.getUTCHours()).slice(-2) + ":";
+			out += ("00" + time.getMinutes()).slice(-2) + ":";
+			out += ("00" + time.getSeconds()).slice(-2) + ".";
+			out += ("000" + time.getMilliseconds()).slice(-3);
+
+			return out;
+		};
+	});
 
 global.createId = function() {
 	// If we have a cryptographically secure PRNG, use that

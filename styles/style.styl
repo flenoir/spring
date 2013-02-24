@@ -165,6 +165,69 @@ div#itemEditor
 		.left
 			float left
 
+div#status
+	div.layers
+		position absolute
+		top 0
+		right 0
+		bottom 0
+		left 0
+		overflow-y auto
+		background darkbgcolor
+
+	div.layer
+		clear both
+		position relative
+		height 80px
+		border-bottom 1px solid #303030
+		box-shadow inset 0px 1px 0px 0px #6A6A6A
+		padding 4px
+		background bgcolor
+
+		&.selected
+			background bgcolorSelected
+
+		div.channel
+			position absolute
+			top 5px
+			left 5px
+			width 45px
+			padding 5px
+			font-weight bold
+			font-size 20px
+			text-align center
+			border 1px solid #303030
+			box-shadow inset -1px -1px 0px 0px #6A6A6A
+
+		div.right
+			position absolute
+			top 5px
+			left 70px
+			right 5px
+
+			div.progressBar
+				width 100%
+				height 2px
+				margin 6px auto
+				position relative
+				background darkbgcolor
+
+				div.fill
+					background #07F
+					height 100%
+					border-radius 2px
+				div.point
+					position absolute
+					top -4px
+					width 10px
+					height 10px
+					margin-left -5px
+					border-radius 10px
+					background rgba(0,111,255, 0.65)
+
+			div.remaining
+				float right
+
 div#settings
 	div.editor
 		position absolute

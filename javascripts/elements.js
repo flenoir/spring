@@ -29,7 +29,7 @@ var elementsCtrl = function ($scope) {
 		$scope.filePath = false;
 		$scope.elements = [];
 		$scope.$apply();
-	}
+	};
 
 	apiServer.start();
 	apiServer.on("newElements", function (newElements) {
@@ -310,6 +310,18 @@ var elementsCtrl = function ($scope) {
 		ccg.clear(global.settings.playout.channel + "-" + global.settings.playout.templateBgLayer);
 	};
 
+
+	$scope.openStatus = function () {
+		var newWin = gui.Window.open("status.html",{
+			toolbar: false,
+			"always-on-top": true,
+			width: 550,
+			height: 200,
+			min_width: 300,
+			min_height: 100
+		});
+	};
+
 	$scope.openSettings = function () {
 		var newWin = gui.Window.open("settings.html",{
 			position: "center",
@@ -333,6 +345,7 @@ var elementsCtrl = function ($scope) {
 	var fileMenu  = new gui.Menu();
 	var editMenu  = new gui.Menu();
 	var helpMenu  = new gui.Menu();
+
 	menu.append(new gui.MenuItem({label: "File", submenu: fileMenu}));
 	menu.append(new gui.MenuItem({label: "Edit", submenu: editMenu}));
 	menu.append(new gui.MenuItem({label: "Help", submenu: helpMenu}));
@@ -347,11 +360,12 @@ var elementsCtrl = function ($scope) {
 	fileMenu.append(new gui.MenuItem({
 		label: "Save",
 		click: $scope.saveFile
-	}))
-;	fileMenu.append(new gui.MenuItem({
+	}));
+	fileMenu.append(new gui.MenuItem({
 		label: "Save As",
 		click: $scope.saveFileAs
 	}));
+
 	editMenu.append(new gui.MenuItem({
 		label: "New Element",
 		click: $scope.newElement
@@ -366,6 +380,11 @@ var elementsCtrl = function ($scope) {
 		label: "Settings",
 		click: $scope.openSettings
 	}));
+	editMenu.append(new gui.MenuItem({
+		label: "Output Status",
+		click: $scope.openStatus
+	}));
+
 	helpMenu.append(new gui.MenuItem({
 		label: "About",
 		click: $scope.openAbout
@@ -498,6 +517,8 @@ var elementsCtrl = function ($scope) {
 		}
 	}
 
+	$scope.openStatus();
+
 	gui.App.on("open", function (e) {
 		$scope.openFile(e);
 	});
@@ -507,4 +528,5 @@ var elementsCtrl = function ($scope) {
 		this.close();
 		gui.App.quit();
 	});
+	global.libraryWindow = win;
 };

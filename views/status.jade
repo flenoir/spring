@@ -1,0 +1,24 @@
+extends layout
+
+block head
+	title Output Status
+	script(type="text/javascript",src="javascripts/status.js")
+
+block content
+	div#status(ng-controller="statusCtrl")
+		div.layers
+			div.layer(ng-repeat="layer in layers")
+				div.channel {{layer.index}}
+				div.right
+					div.status {{layer.status | uppercase}} {{{true: "Loop"}[layer.foreground.loop]}}
+					div.status(ng-show="layer.foreground.type=='flash-producer'") Template
+					div.playhead(ng-show="layer.foreground.type=='ffmpeg-producer'")
+						div.progressBar
+							div.fill(style="width: {{layer.foreground.currentFileFrame / layer.foreground.fileLength * 100}}%;")
+							div.point(style="left: {{layer.foreground.currentFileFrame / layer.foreground.fileLength * 100}}%;")
+						div.remaining {{layer.foreground.fileLength - layer.foreground.currentFileFrame | timecode}}
+						div.current {{layer.foreground.currentFileFrame | timecode}}
+					div.filename(ng-show="layer.foreground.filename") {{layer.foreground.filename}}
+					div.background(ng-show="layer.background.filename") {{layer.background.filename}} - {{layer.background.fileLength | timecode}}
+
+		div.out {{layers}}
