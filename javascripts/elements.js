@@ -83,6 +83,8 @@ var elementsCtrl = function ($scope) {
 			$scope.elements = data.elements;
 			$scope.savedElements = angular.copy($scope.elements);
 			$scope.$apply();
+
+			localStorage.openFile = $scope.filePath;
 		});
 	};
 
@@ -489,6 +491,10 @@ var elementsCtrl = function ($scope) {
 
 		if (typeof(path) == "string") {
 			$scope.openFile(path);
+		}
+	} else {
+		if (localStorage.openFile) {
+			$scope.openFile(localStorage.openFile);
 		}
 	}
 
