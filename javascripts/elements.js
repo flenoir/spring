@@ -104,7 +104,7 @@ var elementsCtrl = function ($scope) {
 		});
 
 		var data = {
-			elements: elements
+			elements: $scope.elements
 		};
 
 		data = angular.toJson(data);
