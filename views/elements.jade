@@ -9,9 +9,11 @@ block content
 	input#saveAs(type="file",style="display: none;",nwsaveas)
 	div#library(ng-controller="elementsCtrl")
 		div.toolbar
-			button(ng-click="clearMedia()") Clear Media
-			button(ng-click="clearTemplate()") Clear Template
-			button.right(ng-click="newElement()") New Element
+			button(ng-click="clearMedia()") Clear M
+			button(ng-click="stopTemplate()") Stop T
+			button(ng-click="clearTemplate()") Clear T
+			button(ng-click="clear()") Clear
+			button.right(ng-click="newElement()") New
 
 			label(ng-show="isPreviewEnabled()")
 				input(type="checkbox",ng-model="autoPreview")

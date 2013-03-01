@@ -305,9 +305,17 @@ var elementsCtrl = function ($scope) {
 		ccg.clear(global.settings.playout.channel + "-" + global.settings.playout.videoLayer);
 	};
 
+	$scope.stopTemplate = function () {
+		ccg.stopTemplate(global.settings.playout.channel + "-" + global.settings.playout.templateLayer);
+	};
+
 	$scope.clearTemplate = function () {
 		ccg.clear(global.settings.playout.channel + "-" + global.settings.playout.templateLayer);
 		ccg.clear(global.settings.playout.channel + "-" + global.settings.playout.templateBgLayer);
+	};
+
+	$scope.clear = function () {
+		ccg.clear(global.settings.playout.channel);
 	};
 
 
